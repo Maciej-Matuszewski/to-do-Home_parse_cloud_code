@@ -1,0 +1,10 @@
+{
+  "applications": {
+    "_default": {
+      "link": "to-do@Home"
+    },
+    "to-do@Home": {
+      "applicationId": "rVJABJvv2XYeyR30JRbZwMI5lPOLVvjOwM33eZTb"
+    }
+  }
+}
