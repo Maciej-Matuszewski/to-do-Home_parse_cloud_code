@@ -7,37 +7,49 @@ Parse.Cloud.job("assigningTasks", function(request, status) {
                 queryTaskType.each(function(taskType) {
                            
                                    var user;
-                                   
-                                   var query = new Parse.Query(Parse.User);
-                                   query.each(function(u) {
-                                              user = u;
-                                              }).then(function() {
-                                                      
-                                                      
-                                                      var nowPlusFrequency = now;
-                                                      nowPlusFrequency.setDate(now.getDate() + taskType.get("frequency"));
-                                                      
-                                                      var Task = Parse.Object.extend("Task");
-                                                      var task = new Task();
-                                                      
-                                                      task.set("title", taskType.get("title"));
-                                                      task.set("taskType", taskType);
-                                                      task.set("home",taskType.get("home"));
-                                                      task.set("done", false);
-                                                      task.set("startDate", now);
-                                                      task.set("endDate", nowPlusFrequency);
-                                                      task.set("user",user);
-                                                      
-                                                      task.save();
-                                                      
-                                                      taskType.set("readyUntil", nowPlusFrequency);
-                                                      
-                                                      
-                                                      }, function(error) {
-                                                      });
-                                   
-                                   
-                                   
+                                   var users = [];
+                                   var tasks = [];
+                                   var usersTasks = []
+                                   var User = Parse.Object.extend("User");
+                                   var queryUser = new Parse.Query(User);
+                                   queryUser.equalTo("home", taskType.get("home"));
+                                   queryUser.each(function(u){
+                                                       
+                                                       users.push(u);
+                                                       
+                                                       
+                                                       }).then(function() {
+                                                               
+                                                               var Task = Parse.Object.extend("Task");
+                                                               var queryTask = new Parse.Query();
+                                                               queryTask.equalTo("home", taskType.get("home"));
+                                                               queryTask.each(function(t){
+                                                                                   
+                                                                                   tasks.push(t);
+                                                                                   
+                                                                                   
+                                                                                   }).then(function() {
+                                                                                           
+                                                                                           //count tasks
+                                                                                           for( i = 0; i < tasks.lenght; i++ ){
+                                                                                           usersTasks[users.indexOf(tasks[i].get("user"))]++;
+                                                                                           }
+                                                                                           
+                                                                                           
+                                                                                           //find max
+                                                                                           
+                                                                                           //set user
+                                                                                           
+                                                                                           //add task
+                                                                                           
+                                                                                           
+                                                                                           }, function(error) {
+                                                                                           
+                                                                                           });
+                                                               
+                                                               }, function(error) {
+                                                               
+                                                               });
                            
                            return taskType.save();
                            }).then(function() {
