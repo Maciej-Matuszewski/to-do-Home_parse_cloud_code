@@ -130,5 +130,21 @@ function createNewTask(now, nowPlusFrequency, type, user, finish, status){
     
     task.save();
     
+    var pushQuery = new Parse.Query(Parse.Installation);
+    pushQuery.equalTo("user",user);
+    
+    Parse.Push.send({
+                    where: pushQuery,
+                    data: {
+                    alert: "New task for you: " + type.get("title"),
+                    sound: "default"
+                    }
+                    },{
+                    success: function(){
+                    },
+                    error: function (error) {
+                    }
+                    });
+    
     if(finish == true) status.success("Success!");
 }
