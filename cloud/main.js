@@ -2,7 +2,7 @@ Parse.Cloud.job("assigningTasks", function(request, status) {
                 
     Parse.Cloud.useMasterKey();
     var now = new Date();
-    now.setDate(now.getDate() + 1);
+    now.setDate(now.getDate());
     now.setHours(0,0,0,1);
        
     var TaskType = Parse.Object.extend("TaskType");
